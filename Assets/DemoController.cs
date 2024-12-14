@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;  // Для обработки событий UI
+using UnityEngine.EventSystems;
 
 public class DemoController : MonoBehaviour
 {
     public float moveSpeed = 4f;
     public float rotationSpeed = 100f;
 
-    // Кнопки для UI
     public Button moveUpButton;  
     public Button moveDownButton;  
     public Button moveLeftButton;  
@@ -28,7 +27,6 @@ public class DemoController : MonoBehaviour
 
     void Start()
     {
-        // Подключаем методы для кнопок UI
         AddButtonListeners(moveUpButton, "MoveUp");
         AddButtonListeners(moveDownButton, "MoveDown");
         AddButtonListeners(moveLeftButton, "MoveLeft");
@@ -41,24 +39,23 @@ public class DemoController : MonoBehaviour
 
     void Update()
     {
-        // Движение по осям X, Y и Z для клавиш
-        float moveX = -Input.GetAxis("Horizontal"); // инвертируем движение по X
-        float moveY = -Input.GetAxis("Vertical");   // инвертируем движение по Y
+        float moveX = -Input.GetAxis("Horizontal");
+        float moveY = -Input.GetAxis("Vertical");
         float moveZ = 0f;
 
         if (Input.GetKey(KeyCode.R))
         {
-            moveZ = -1f;  // инвертируем движение по оси Z
+            moveZ = -1f;
         }
         else if (Input.GetKey(KeyCode.F))
         {
-            moveZ = 1f;   // инвертируем движение по оси Z
+            moveZ = 1f;
         }
 
         Vector3 movement = new Vector3(moveX, moveY, moveZ) * moveSpeed * Time.deltaTime;
         transform.Translate(movement, Space.World);
 
-        // Поворот вокруг оси Y (без изменений)
+
         if (Input.GetKey(KeyCode.Q))
         {
             transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
@@ -68,18 +65,17 @@ public class DemoController : MonoBehaviour
             transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime, Space.World);
         }
 
-        // Проверка, если кнопки UI зажаты, выполняем соответствующие действия
         if (moveUpPressed)
-            transform.Translate(Vector3.down * moveSpeed * Time.deltaTime, Space.World);   // инвертированное движение по оси Y
+            transform.Translate(Vector3.down * moveSpeed * Time.deltaTime, Space.World);
 
         if (moveDownPressed)
-            transform.Translate(Vector3.up * moveSpeed * Time.deltaTime, Space.World);   // инвертированное движение по оси Y
+            transform.Translate(Vector3.up * moveSpeed * Time.deltaTime, Space.World);
 
         if (moveLeftPressed)
-            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.World); // инвертированное движение по оси X
+            transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.World); 
 
         if (moveRightPressed)
-            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime, Space.World); // инвертированное движение по оси X
+            transform.Translate(Vector3.left * moveSpeed * Time.deltaTime, Space.World); 
 
         if (rotateLeftPressed)
             transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime, Space.World);
@@ -88,13 +84,12 @@ public class DemoController : MonoBehaviour
             transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
 
         if (moveForwardPressed)
-            transform.Translate(Vector3.back * moveSpeed * Time.deltaTime, Space.World);  // инвертированное движение по оси Z
+            transform.Translate(Vector3.back * moveSpeed * Time.deltaTime, Space.World);
 
         if (moveBackwardPressed)
-            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.World); // инвертированное движение по оси Z
+            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
     }
 
-    // Метод для добавления обработчиков событий для кнопок UI
     private void AddButtonListeners(Button button, string action)
     {
         EventTrigger trigger = button.gameObject.AddComponent<EventTrigger>();
@@ -108,7 +103,6 @@ public class DemoController : MonoBehaviour
         trigger.triggers.Add(pointerUp);
     }
 
-    // Обработчик нажатия кнопки
     private void OnPointerDown(string action)
     {
         switch (action)
@@ -124,7 +118,6 @@ public class DemoController : MonoBehaviour
         }
     }
 
-    // Обработчик отпускания кнопки
     private void OnPointerUp(string action)
     {
         switch (action)
